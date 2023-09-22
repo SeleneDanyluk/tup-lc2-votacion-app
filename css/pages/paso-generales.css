@@ -9,7 +9,7 @@
     --bar-thickness: 25px;
     --bar-rounded: 3px;
     --bar-spacing: 10px;
-    --bar-color: blue;
+    --bar-color: rgba(0, 0, 255, 0.492);
 }
 
 /*Menú de navegación*/
