@@ -1,0 +1,137 @@
+  @import './common.css';
+  @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+
+  /*Barra de navegación del index*/
+  
+  .header-menu {
+      background-color: var(--fondo-Menu);
+      padding: 5px;
+  }
+
+  .header-menu ul {
+      display: grid;
+      grid-template-columns: repeat(4, auto) 1fr;
+      align-items: center;
+  }
+
+  .header-menu li {
+      color: white;
+      margin-right: 15px;
+  }
+
+  .header-menu ul li {
+      list-style-type: none;
+      display: inline-flex;
+  }
+
+  .header-menu ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 12px;
+  }
+
+  .nav-generales {
+      background-color: var(--celeste);
+      border-radius: 5px;
+      padding: 10px 20px 10px 20px;
+      margin-right: 15px;
+  }
+
+  .nav-generales:hover {
+      background-color: var(--gris-claro);
+  }
+
+  .nav-paso {
+      background-color: var(--magenta);
+      border-radius: 5px;
+      padding: 10px 20px 10px 20px;
+      margin-right: 15px;
+  }
+
+  .nav-paso:hover {
+      background-color: var(--gris-claro);
+  }
+
+  .informes {
+      border-radius: 15px;
+      border: solid 1px white;
+      padding: 10px 20px 10px 20px;
+  }
+
+  .informes:hover {
+      background-color: var(--gris-claro);
+  }
+
+  /*Sección general del index*/
+
+  #sec-titulo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      justify-items: center;
+      margin-top: 20px;
+  }
+
+  .sec-titulo-content {
+      margin: 20px;
+  }
+
+  .sec-titulo-content h2 {
+      margin-left: 20px;
+      margin-bottom: 30px;
+  }
+
+  #sec-titulo img {
+      width: 350px;
+  }
+
+  /*Sección del contenido del index*/
+
+  #sec-contenido {
+      background-color: var(--fondo-pantalla);
+      padding: 20px;
+  }
+
+  #sec-contenido h3,
+  p {
+      margin: 20px 20px 0 20px;
+  }
+
+  .buttons-principales {
+      margin: 40px;
+  }
+
+  .buttons-principales ul {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: center;
+  }
+
+  .buttons-principales ul li {
+      list-style-type: none;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+  }
+
+  .buttons-principales ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 28px;
+  }
+
+  .buttons-principales .nav-paso {
+      border-radius: 10px;
+      margin: 25px;
+      height: 80px;
+      width: 400px;
+      padding: 1rem;
+  }
+
+  .buttons-principales .nav-generales {
+      border-radius: 10px;
+      margin: 25px;
+      height: 80px;
+      width: 400px;
+      padding: 1rem;
+  }
