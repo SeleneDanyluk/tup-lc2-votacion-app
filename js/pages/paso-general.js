@@ -142,3 +142,8 @@ function comboSeccion(){
         });
     }
 }
+
+//chequear que este todo seleccionado
+//mostrar mensajes correspondientes 
+//crear el array de datos
+//limpiar los combos al filtrar
