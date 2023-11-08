@@ -4,6 +4,7 @@ const periodosSelect = document.getElementById("select-anio");
 const cargosSelect = document.getElementById("select-cargo");
 const distritoSelect = document.getElementById("select-distrito");
 const seccionSelect = document.getElementById("select-seccion");
+const hdSeccionProvincial = document.getElementById("hdSeccionProvincial");
 
 
 // Definicion de variables
@@ -12,9 +13,9 @@ var tipoEleccion = null;
 
 
 // Determinamos si estamos en la pagina paso o generales
-if (location.href.includes("paso")){
+if (location.href.includes("paso")) {
     tipoEleccion = 1
-} else{
+} else {
     tipoEleccion = 2
 }
 
@@ -29,15 +30,15 @@ fetch("https://resultados.mininterior.gob.ar/api/menu/periodos")
             option.value = anio;
             option.text = anio;
             periodosSelect.appendChild(option);
-          });
+        });
     }).catch((error) => {
         console.error("Error al obtener datos de la API:", error);
-});
+    });
 
 
 
 // Al realizarse un cambio en el select de año se llama a combo cargo
-function comboCargo(){
+function comboCargo() {
     // Limpiamos las opciones del combo antes de cargarlas nuevamente
     cargosSelect.innerText = null;
     var option = document.createElement("option");
@@ -46,37 +47,36 @@ function comboCargo(){
     cargosSelect.appendChild(option);
 
     // Si se seleccionó un año buscamos los cargos correspondientes
-    if (periodosSelect.value != 0){
+    if (periodosSelect.value != 0) {
         fetch("https://resultados.mininterior.gob.ar/api/menu?año=" + periodosSelect.value)
-        .then(response => response.json())
-        .then(datosFiltrado => {
-            datos = datosFiltrado
-            // Guardamos los datos obtenidos en una variable global para reutilizarlos
-            // si hay error puede ser porque saque esto datos = datosFIltro
-            datosFiltrado.forEach((eleccion) => {
-                if (eleccion.IdEleccion == tipoEleccion) {
-                    // Agregamos las opciones correspondientes al html
-                    eleccion.Cargos.forEach((cargo) => {
-                        var option = document.createElement("option");
-                        option.value = cargo.IdCargo
-                        option.text = cargo.Cargo
-                        cargosSelect.appendChild(option);
-                    })
-                }
-            })
-        }).catch((error) => {
-            console.error("Error al obtener datos de la API:", error);
-        });
-      // Si se des-selecciona el año no permitimos seleccionar lo demás
-    } else{
+            .then(response => response.json())
+            .then(datosFiltrado => {
+                datos = datosFiltrado
+                // Guardamos los datos obtenidos en una variable global para reutilizarlos
+                // si hay error puede ser porque saque esto datos = datosFIltro
+                datosFiltrado.forEach((eleccion) => {
+                    if (eleccion.IdEleccion == tipoEleccion) {
+                        // Agregamos las opciones correspondientes al html
+                        eleccion.Cargos.forEach((cargo) => {
+                            var option = document.createElement("option");
+                            option.value = cargo.IdCargo
+                            option.text = cargo.Cargo
+                            cargosSelect.appendChild(option);
+                        })
+                    }
+                })
+            }).catch((error) => {
+                console.error("Error al obtener datos de la API:", error);
+            });
+        // Si se des-selecciona el año no permitimos seleccionar lo demás
+    } else {
         comboDistrito();
-        comboSeccion();
     }
+    console.log(periodosSelect.value);
 }
 
-
 // Al realizarse un cambio en el select de cargo se llama a combo distrito
-function comboDistrito(){
+function comboDistrito() {
     // Limpiamos las opciones del combo antes de cargarlas nuevamente
     distritoSelect.innerText = null;
     var option = document.createElement("option");
@@ -88,29 +88,34 @@ function comboDistrito(){
     if (periodosSelect.value != 0 && cargosSelect.value != 0) {
         datos.forEach((eleccion) => {
             if (eleccion.IdEleccion == tipoEleccion) {
-                    eleccion.Cargos.forEach((cargo) => {
-                        if (cargo.IdCargo == cargosSelect.value) {
-                            // Agregamos las opciones correspondientes al html
-                            cargo.Distritos.forEach((distrito) => {
-                                var option = document.createElement("option");
-                                option.value = distrito.IdDistrito
-                                option.text = distrito.Distrito
-                                distritoSelect.appendChild(option);
-                            });
-                        }
-                    });
-                }
-            });
+                eleccion.Cargos.forEach((cargo) => {
+                    if (cargo.IdCargo == cargosSelect.value) {
+                        // Agregamos las opciones correspondientes al html
+                        cargo.Distritos.forEach((distrito) => {
+                            var option = document.createElement("option");
+                            option.value = distrito.IdDistrito
+                            option.text = distrito.Distrito
+                            distritoSelect.appendChild(option);
+                        });
+                    }
+                });
+            }
+        });
+
+        console.log(cargosSelect.value);
     }
-    else{
+    else {
         // Si se des-selecciona el año o el cargo no permitimos seleccionar lo demás
         comboSeccion();
     }
 }
 
+//dsps de distrito va seccion provincial
+
+
 
 // Al realizarse un cambio en el select de distrito se llama a combo seccion
-function comboSeccion(){
+function comboSeccion() {
     // Limpiamos las opciones del combo antes de cargarlas nuevamente
     seccionSelect.innerText = null;
     var option = document.createElement("option");
@@ -128,11 +133,14 @@ function comboSeccion(){
                             if (distrito.IdDistrito == distritoSelect.value) {
                                 // Agregamos las opciones correspondientes al html
                                 distrito.SeccionesProvinciales.forEach((seccion) => {
-                                    hdSeccionProvincial.value =seccion.IDSeccionProvincial
-                                    var option = document.createElement("option");
-                                    option.value = seccion.IDSeccionProvincial// chequear
-                                    option.text = seccion.SeccionProvincial
-                                    seccionSelect.appendChild(option);
+                                    hdSeccionProvincial.value = seccion.IDSeccionProvincial;
+                                    seccion.Secciones.forEach((secciones) => {
+                                        var option = document.createElement("option");
+                                        option.value = secciones.IDSeccion;
+                                        option.text = secciones.Seccion;
+                                        seccionSelect.appendChild(option);
+                                    })
+
                                 });
                             }
                         });
@@ -143,7 +151,40 @@ function comboSeccion(){
     }
 }
 
-//chequear que este todo seleccionado
-//mostrar mensajes correspondientes 
-//crear el array de datos
-//limpiar los combos al filtrar
+
+
+async function consultarResultados() {
+    const anioEleccion = periodosSelect.value; // Valor seleccionado en el select de año
+    const categoriaId = cargosSelect.value; // Valor seleccionado en el select de cargo
+    const distritoId = distritoSelect.value; // Valor seleccionado en el select de distrito
+    var seccionProvincialId = hdSeccionProvincial.value;
+    if (seccionProvincialId == "undefined") {
+        seccionProvincialId = "";
+    };
+    console.log(seccionProvincialId);
+    const seccionId = seccionSelect.value; // Valor seleccionado en el select de sección
+    const circuitoId = ""; // Valor por defecto
+    const mesaId = ""; // Valor por defecto
+
+    // Validar que todos los campos estén completos
+    if (
+        anioEleccion === "0" ||
+        categoriaId === "0" ||
+        distritoId === "0" ||
+        seccionProvincialId === "0" ||
+        seccionId === "0"
+    ) {
+        alert("Por favor, complete todos los campos de selección en amarillo.");
+        return; // Salir de la función sin realizar la consulta
+    }
+
+    // Realizar la consulta al servicio usando fetch
+    const url = "https://resultados.mininterior.gob.ar/api/resultados/getResultados";
+    const queryParams = `?anioEleccion=${anioEleccion}&tipoRecuento=${tipoRecuento}&tipoEleccion=${tipoEleccion}&categoriaId=${categoriaId}&distritoId=${distritoId}&seccionProvincialId=${seccionProvincialId}&seccionId=${seccionId}&circuitoId=${circuitoId}&mesaId=${mesaId}`;
+
+
+    const response = await fetch(url + queryParams);
+    console.log(response);
+
+
+}
