@@ -56,25 +56,24 @@
     </header>
     <!-- Contenido principal de la página -->
     <main>
-        <section id="sec-titulo">
-            <!--Seccion para agregar una palicula favorita por codigo-->
-            <h1>Elecciones 2021 | Generales</h1>
-            <p class="texto-path">2021 > Generales > Provisorio > Senadores Nacionales > Buenos
-                Aires</p>
-        </section>
         <section id="sec-messages">
-            <div class="green message">
+            <div class="yellow message" id="mensaje">
+                <i class="fa-solid fa-exclamation"></i>
+                <p id="p-message"></p>
+            </div>
+            <!-- <div class="green message">
                 <i class="fa-solid fa-thumbs-up"></i>
                 <p>Se agregó con éxito el resultado al informe</p>
             </div>
             <div class="red message">
                 <i class="fa-solid fa-triangle-exclamation"></i>
                 <p>Error.Se produjo un error al intentar agregar resultados al informe</p>
-            </div>
-            <div class="yellow message">
-                <i class="fa-solid fa-exclamation"></i>
-                <p>La operación no se pudo completar</p>
-            </div>
+            </div> -->
+        </section>
+        <section id="sec-titulo">
+            <!--Seccion para agregar una palicula favorita por codigo-->
+            <h1 id="titulo"></h1>
+            <p class="texto-path" id="texto-path"></p>
         </section>
         <section id="sec-contenido">
             <div class="bottons-container">
@@ -126,7 +125,7 @@
                         </svg>
                         <div class="content-botton">
                             <h4>Mesas Escrutadas</h4>
-                            <p>62.71%</p>
+                            <p id="mesas-escrutadas"></p>
                         </div>
                     </li>
                     <li class="botton-personas">
@@ -215,7 +214,7 @@
                         </svg>
                         <div class="content-botton">
                             <h4>Electores</h4>
-                            <p>62.71%</p>
+                            <p id="electores"></p>
                         </div>
                     </li>
                     <li class="botton-manos">
@@ -274,7 +273,7 @@
                         </svg>
                         <div class="content-botton">
                             <h4>Participación sobre escrutado</h4>
-                            <p>62.71%</p>
+                            <p id="participacion"></p>
                         </div>
                     </li>
                 </ul>

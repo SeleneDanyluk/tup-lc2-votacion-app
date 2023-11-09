@@ -22,7 +22,7 @@
 
 .header-menu ul {
     display: grid;
-    grid-template-columns: repeat(6, auto) 1fr;
+    grid-template-columns: repeat(7, auto) 1fr;
     align-items: center;
     justify-items: end;
 }
@@ -133,12 +133,11 @@ select {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
 .message {
     color: white;
-    display: inline-flex;
+    display: flex;
     margin: 20px auto;
     padding: 15px;
     border-radius: 10px;
@@ -157,14 +156,17 @@ select {
 
 .green {
     background-color: var(--mensaje-usuario-verde);
+    display: none;
 }
 
 .red {
     background-color: var(--mensaje-usuario-rojo);
+    display: none;
 }
 
 .yellow {
     background-color: var(--mensaje-usuario-amarillo);
+    display: none;
 }
 
 /*Contenido de la página*/
