@@ -118,6 +118,8 @@ select {
 
 /*Sección del título*/
 #sec-titulo {
+    display: none;
+    flex-direction: column;
     margin: 20px;
 }
 
@@ -173,6 +175,7 @@ select {
 
 #sec-contenido {
     margin-bottom: 50px;
+    display: none;
 }
 
 .bottons-container ul {
