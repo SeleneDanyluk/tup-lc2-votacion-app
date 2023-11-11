@@ -36,8 +36,21 @@ const mapasProv = {
     22: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M192 52L192 37L153 37L152 39L133 39L128 52L128 63L126 63L123 67L120 79L117 80L116 87L118 91L116 94L113 94L115 109L113 114L121 124L119 130L121 138L132 136L140 137L140 139L144 138L145 140L152 140L152 143L167 144L168 148L173 152L173 158L181 158L182 162L192 97z"></path></svg>',
     23: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M165 127L168 126L165 123L167 115L169 116L172 114L177 102L179 89L181 90L181 87L184 88L185 81L189 82L189 58L182 59L176 57L169 61L168 59L155 57L152 51L147 53L136 53L134 65L117 58L117 67L114 68L114 76L115 78L118 78L128 85L126 91L128 93L115 110L122 114L122 123L125 132L129 137L129 141L130 142L131 138L133 138L135 144L140 149L142 149L144 145L150 141L158 146L160 142L163 144L164 143L166 137L169 137L165 128z"></path></svg>',
     24: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M166 125L160 121L154 114L139 104L136 98L129 92L122 78L120 79L114 76L114 73L118 67L120 67L121 69L121 67L113 54L113 140L114 138L118 138L120 136L132 139L141 138L161 146L163 143L172 143L173 140L177 140L180 142L185 139L185 141L188 140L188 138L190 137L189 135L192 130L181 130L170 128L167 126z"></path></svg>'
-  };
-
+};
+const coloresAgrupacionesPoliticas = {
+    134: {
+        colorPleno: 'rgb(0, 169, 232);',
+        colorLiviano: 'rgba(0, 169, 232, 0.3)'
+    },
+    135: {
+        colorPleno: 'rgb(112, 76, 159)',
+        colorLiviano: 'rgba(112, 76, 159, 0.5)'
+    },
+    132: {
+        colorPleno: 'rgb(252, 210, 0)',
+        colorLiviano: 'rgba(252, 210, 0, 0.3)'
+    }
+};
 
 // Definicion de variables
 var datos = null;
@@ -52,8 +65,8 @@ if (location.href.includes("paso")) {
 }
 
 //setear intervalo (ver para mostrar los otros mensajes)
-function mostrarMensajeRojo(mensaje="") {
-    if (mensaje != ""){
+function mostrarMensajeRojo(mensaje = "") {
+    if (mensaje != "") {
         parrafoMensajeRojo.innerHTML = mensaje
     }
     mensajeRojo.style.display = 'flex'
@@ -62,8 +75,8 @@ function mostrarMensajeRojo(mensaje="") {
     }, 5000);
 }
 
-function mostrarMensajeAmarillo(mensaje="") {
-    if (mensaje != ""){
+function mostrarMensajeAmarillo(mensaje = "") {
+    if (mensaje != "") {
         parrafoMensajeAmarillo.innerHTML = mensaje
     }
     mensajeAmarillo.style.display = 'flex'
@@ -273,11 +286,44 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
     tituloRecuadroProv.innerHTML = `${distritoTxt}`;
     mapa = document.getElementById("provincia");
     mapa.innerHTML = mapasProv[distritoId];
-    
-    //Grafico de barras
 
+    //Grafico de barras
+    contenedorBarrasVerticales = document.getElementById("chart-wrap horizontal");
 
     //Barras horizontales
+    const contenedorBarras = document.getElementById("barras");
+    let html = "";
+
+    datos.valoresTotalizadosPositivos.forEach((agrupacion) => {
+        if (coloresAgrupacionesPoliticas.hasOwnProperty(agrupacion.idAgrupacion)) {
+            html += `
+            <div class="progress-container">
+                <div class="progress-titulo">
+                    <h4>${agrupacion.nombreAgrupacion}</h4>
+                    <p>${agrupacion.votosPorcentaje}<br>${agrupacion.votos}Votos</p>
+                </div>
+                <div class="progress" style="background: ${coloresAgrupacionesPoliticas[idAgrupacion].colorLiviano};">
+                    <div class="progress-bar" style="width: ${agrupacion.votosPorcentaje}%; background: ${coloresAgrupacionesPoliticas[idAgrupacion].colorPleno};">
+                        <span class="progress-bar-text">${agrupacion.votosPorcentaje}%</span>
+                    </div>
+                </div>
+            </div>`;
+        } else {
+            html += `
+            <div class="progress-container">
+                <div class="progress-titulo">
+                    <h4>${agrupacion.nombreAgrupacion}</h4>
+                    <p>${agrupacion.votosPorcentaje}<br>${agrupacion.votos}Votos</p>
+                </div>
+                <div class="progress" style="background: --grafica-gris-claro: rgb(128, 128, 128, 0.5);">
+                    <div class="progress-bar" style="width:${agrupacion.votosPorcentaje}%; --grafica-gris: rgb(128, 128, 128);">
+                        <span class="progress-bar-text">${agrupacion.votosPorcentaje}%</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+    });
+    contenedorBarras.innerHTML = html;
 }
 
 function limpiarCombos() {
@@ -287,3 +333,4 @@ function limpiarCombos() {
     seccionSelect.value = 0;
     hdSeccionProvincial.value = 0;
 }
+

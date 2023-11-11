@@ -175,7 +175,7 @@ select {
 
 #sec-contenido {
     margin-bottom: 50px;
-    display: none;
+    display: grid;
 }
 
 .bottons-container ul {
