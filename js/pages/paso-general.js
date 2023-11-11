@@ -5,6 +5,12 @@ const cargosSelect = document.getElementById("select-cargo");
 const distritoSelect = document.getElementById("select-distrito");
 const seccionSelect = document.getElementById("select-seccion");
 const hdSeccionProvincial = document.getElementById("hdSeccionProvincial");
+const mensajeVerde = document.querySelector('.green')
+const mensajeAmarillo = document.querySelector('.yellow')
+const mensajeRojo = document.querySelector('.red')
+const parrafoMensajeAmarillo = mensajeAmarillo.querySelector('p')
+const parrafoMensajeRojo = mensajeRojo.querySelector('p')
+
 const mapasProv = {
     1: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M182 61L179 56L176 58L178 56L176 53L173 55L169 47L168 48L164 45L157 43L158 41L155 41L154 36L149 32L148 33L143 29L142 30L145 32L140 29L138 32L137 30L140 29L139 26L137 28L136 23L133 22L130 27L103 41L81 99L82 134L131 179L159 140L168 137L171 139L174 138L181 141L186 137L195 136L200 130L207 125L205 120L210 118L210 112L205 107L210 110L213 114L215 113L215 110L217 110L218 112L219 111L217 109L221 111L224 109L220 106L222 106L221 102L218 102L216 104L215 103L217 102L212 102L220 101L219 95L216 92L214 86L208 81L200 83L199 80L201 79L202 81L200 77L206 75L203 75L203 73L206 73L201 71L205 70L199 69L198 68L202 68L200 66L195 67L194 66L198 65L188 62L192 62L190 60L183 59L189 64L187 65z"></path></svg>',
     2: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M171 55L163 53L150 45L147 50L143 49L133 60L114 60L114 151L116 151L120 155L122 156L126 153L128 149L124 145L126 143L126 138L128 138L129 133L126 129L126 122L134 126L139 126L169 119L179 114L189 97L190 89L189 87L186 87L182 82L185 75L181 69L171 63L170 64L170 58z"></path></svg>',
@@ -46,13 +52,26 @@ if (location.href.includes("paso")) {
 }
 
 //setear intervalo (ver para mostrar los otros mensajes)
-var mensajeContenedor = document.getElementById("mensaje");
-var mensaje = document.getElementById("p-message")
-mensaje.innerHTML = "Debe seleccionar los valores a filtrar y hacer clic en el botón FILTRAR."
-mensajeContenedor.style.display = "flex";
-setTimeout(function () {
-    mensajeContenedor.style.display = "none";
-}, 10000);
+function mostrarMensajeRojo(mensaje="") {
+    if (mensaje != ""){
+        parrafoMensajeRojo.innerHTML = mensaje
+    }
+    mensajeRojo.style.display = 'flex'
+    setTimeout(() => {
+        mensajeRojo.style.display = 'none'
+    }, 5000);
+}
+
+function mostrarMensajeAmarillo(mensaje="") {
+    if (mensaje != ""){
+        parrafoMensajeAmarillo.innerHTML = mensaje
+    }
+    mensajeAmarillo.style.display = 'flex'
+    setTimeout(() => {
+        mensajeAmarillo.style.display = 'none'
+    }, 5000);
+
+}
 
 
 // Obtenemos las opciones para el select de año
@@ -66,8 +85,8 @@ fetch("https://resultados.mininterior.gob.ar/api/menu/periodos")
             option.text = anio;
             periodosSelect.appendChild(option);
         });
-    }).catch((error) => {
-        console.error("Error al obtener datos de la API:", error);
+    }).catch(() => {
+        mostrarMensajeRojo("Error. No se pudieron cargar los datos. Intentelo mas tarde")
     });
 
 
@@ -99,8 +118,8 @@ function comboCargo() {
                         })
                     }
                 })
-            }).catch((error) => {
-                console.error("Error al obtener datos de la API:", error);
+            }).catch(() => {
+                mostrarMensajeRojo("Error. No se pudieron cargar los datos. Intentelo mas tarde")
             });
         // Si se des-selecciona el año no permitimos seleccionar lo demás
     } else {
@@ -202,7 +221,7 @@ async function consultarResultados() {
         seccionProvincialId === "0" ||
         seccionId === "0"
     ) {
-        alert("Por favor, complete todos los campos de selección en amarillo."); //mensaje amarillo
+        mostrarMensajeAmarillo("Por favor, complete todos los campos de selección")
         return;
     }
 
@@ -215,13 +234,7 @@ async function consultarResultados() {
         console.log(datos.estadoRecuento.mesasTotalizadas);
         cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTxt, seccionTxt, distritoId);
     } catch (error) {
-        mensaje.classList.remove("yellow")
-        mensaje.classList.add("red")
-        mensaje.innerHTML = "Error.Se produjo un error al intentar agregar resultados al informe."
-        mensajeContenedor.style.display = "flex";
-        setTimeout(function () {
-            mensajeContenedor.style.display = "none";
-        }, 5000);
+        mostrarMensajeRojo()
     }
     limpiarCombos();
 }
