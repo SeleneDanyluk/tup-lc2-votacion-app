@@ -293,14 +293,26 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
 
     //Grafico de barras
     contenedorBarrasVerticales = document.getElementById("chart-wrap horizontal");
+    var html = "";
+
+    for (let index = 0; index < 8; index++) {
+        if (coloresAgrupacionesPoliticas.hasOwnProperty(datos.valoresTotalizadosPositivos[index].idAgrupacion)) {
+            html += `
+    <div class="bar" style="background: ${coloresAgrupacionesPoliticas[datos.valoresTotalizadosPositivos[index].idAgrupacion].colorPleno};" style="--bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%"></div>`;
+        } else {
+            html += `
+    <div class="bar" style="background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};" style="--bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%"></div>`;
+        };
+        contenedorBarrasVerticales.innerHTML = html;
+    }
 
     //Barras horizontales
     const contenedorBarras = document.getElementById("barras");
     var html = "";
 
-    
+
     datos.valoresTotalizadosPositivos.forEach((agrupacion) => {
-        console.log( agrupacion);
+        console.log(agrupacion);
         if (coloresAgrupacionesPoliticas.hasOwnProperty(agrupacion.idAgrupacion)) {
             console.log("entro if");
             html += `
@@ -342,4 +354,8 @@ function limpiarCombos() {
     seccionSelect.value = 0;
     hdSeccionProvincial.value = 0;
 }
+
+// function agregarInforme(){
+
+// }
 
