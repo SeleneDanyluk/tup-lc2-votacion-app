@@ -7,7 +7,9 @@ const seccionSelect = document.getElementById("select-seccion");
 const hdSeccionProvincial = document.getElementById("hdSeccionProvincial");
 const mensajeVerde = document.querySelector('.green')
 const mensajeAmarillo = document.querySelector('.yellow')
+const mansajeVerde = document.querySelector('.green')
 const mensajeRojo = document.querySelector('.red')
+const parrafoMensajeVerde = mansajeVerde.querySelector('p')
 const parrafoMensajeAmarillo = mensajeAmarillo.querySelector('p')
 const parrafoMensajeRojo = mensajeRojo.querySelector('p')
 
@@ -87,7 +89,16 @@ function mostrarMensajeAmarillo(mensaje = "") {
     setTimeout(() => {
         mensajeAmarillo.style.display = 'none'
     }, 5000);
+}
 
+function mostrarMensajeVerde(mensaje = "") {
+    if (mensaje != "") {
+        parrafoMensajeVerde.innerHTML = mensaje
+    }
+    mensajeVerde.style.display = 'flex'
+    setTimeout(() => {
+        mansajeVerde.style.display = 'none'
+    }, 5000);
 }
 
 
@@ -253,7 +264,6 @@ async function consultarResultados() {
     } catch (error) {
         mostrarMensajeRojo()
     }
-    limpiarCombos();
 }
 
 //hacer desaparecer todo y que aparezca cuando se carga la api
@@ -291,24 +301,10 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
     mapa = document.getElementById("provincia");
     mapa.innerHTML = mapasProv[distritoId];
 
-    //Grafico de barras
-    contenedorBarrasVerticales = document.getElementById("chart-wrap horizontal");
-    var html = "";
-
-    for (let index = 0; index < 8; index++) {
-        if (coloresAgrupacionesPoliticas.hasOwnProperty(datos.valoresTotalizadosPositivos[index].idAgrupacion)) {
-            html += `
-    <div class="bar" style="background: ${coloresAgrupacionesPoliticas[datos.valoresTotalizadosPositivos[index].idAgrupacion].colorPleno};" style="--bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%"></div>`;
-        } else {
-            html += `
-    <div class="bar" style="background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};" style="--bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%"></div>`;
-        };
-        contenedorBarrasVerticales.innerHTML = html;
-    }
 
     //Barras horizontales
     const contenedorBarras = document.getElementById("barras");
-    var html = "";
+    let html = "";
 
 
     datos.valoresTotalizadosPositivos.forEach((agrupacion) => {
@@ -329,7 +325,6 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
             </div>`;
             console.log(html);
         } else {
-            console.log("entro else")
             html += `
             <div class="progress-container">
                 <div class="progress-titulo">
@@ -345,6 +340,19 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
         }
     });
     contenedorBarras.innerHTML = html;
+
+    //Grafico de barras
+    const contenedorBarrasVerticales = document.getElementById("grid");
+    html = "";
+    for (let index = 0; index < 8; index++) {
+        if (coloresAgrupacionesPoliticas.hasOwnProperty(datos.valoresTotalizadosPositivos[index].idAgrupacion)) {
+            html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas[datos.valoresTotalizadosPositivos[index].idAgrupacion].colorPleno}; --bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}85%"></div>`;
+        } else {
+            console.log("else")
+            html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas["gris"].colorPleno}; --bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}85%"></div>`;
+        };
+        contenedorBarrasVerticales.innerHTML = html;
+    }
 }
 
 function limpiarCombos() {
@@ -353,9 +361,57 @@ function limpiarCombos() {
     distritoSelect.value = 0;
     seccionSelect.value = 0;
     hdSeccionProvincial.value = 0;
+};
+
+function agregarInforme() {
+    var anioEleccion = periodosSelect.value; // Valor seleccionado en el select de año
+    var cargoTxt = cargosSelect.options[cargosSelect.selectedIndex].innerText; // Valor seleccionado en el select de cargo
+    var distritoTxt = distritoSelect.options[distritoSelect.selectedIndex].innerText;
+    var seccionProvincialId = hdSeccionProvincial.value;
+    if (seccionProvincialId === "undefined") {
+        seccionProvincialId = "";
+    };
+    var seccionId = seccionSelect.value;
+    var mesasEscrutadas = datos.estadoRecuento.mesasTotalizadas
+    var cantidadElectores = datos.estadoRecuento.cantidadElectores
+    var participacion = datos.estadoRecuento.participacionPorcentaje
+    var nombreAgrupaciones = [];
+    var votosAgrupaciones = [];
+    var porcentajesAgrupaciones = [];
+    datos.valoresTotalizadosPositivos.forEach((agrupacion) =>{
+        nombreAgrupaciones.push(agrupacion.nombreAgrupacion);
+        votosAgrupaciones.push(agrupacion.votos);
+        porcentajesAgrupaciones.push(agrupacion.votosPorcentaje);
+    } )
+    console.log(datos);
+    
+    var values = [anioEleccion, tipoRecuento, tipoEleccion, cargoTxt, distritoTxt, seccionProvincialId, seccionId, mesasEscrutadas, cantidadElectores, participacion, nombreAgrupaciones, votosAgrupaciones, porcentajesAgrupaciones]
+    var key = "INFORMES";  // Use "INFORMES" as the key for all entries
+    var storedData = localStorage.getItem(key);
+
+    if (storedData != null) {
+        // Parse the existing data from local storage
+        var existingData = JSON.parse(storedData);
+
+        // Check if the new entry already exists
+        var entryExists = existingData.some(function(entry) {
+            return JSON.stringify(entry) === JSON.stringify(values);
+        });
+
+        if (entryExists) {
+            mostrarMensajeAmarillo();
+        } else {
+            // Add the new entry to the existing data
+            existingData.push(values);
+
+            // Update the local storage with the modified data
+            localStorage.setItem(key, JSON.stringify(existingData));
+            mostrarMensajeVerde();
+        }
+    } else {
+        // If no existing data, create a new array with the current entry
+        localStorage.setItem(key, JSON.stringify([values]));
+        mostrarMensajeVerde();
+    }
+    limpiarCombos();
 }
-
-// function agregarInforme(){
-
-// }
-

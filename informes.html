@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./css/pages/informes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="js/pages/informes.js" defer></script>
 </head>
 
 <body>
@@ -51,15 +52,15 @@
         </section>
         <section id="sec-contenido">
             <div class="container-grilla-informes">
-                <table class="tabla-informes">
+                <table class="tabla-informes" id="tabla-informes">
                     <tr>
                         <th>Provincia</th>
                         <th>Elección</th>
                         <th>Datos Generales</th>
                         <th>Datos por Agrupación</th>
                     </tr>
-                    <tr class="tabla-body">
-                        <td class="provincia">
+                    <!-- <tr class="tabla-body" id="tabla-body"> -->
+                        <!-- <td class="provincia">
                             <div class="flex-td">
                                 <svg height="210" width="800">
                                     <path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1"
@@ -280,23 +281,21 @@
                         </td>
                         <td class="datos-agrupacion">
                             <div class="flex-td">
-                                <div class="partidos">
+                                <div class="partidos" id="partidos">
                                     <p>Juntos</p>
                                     <p>PJ</p>
                                 </div>
-                                <div class="votos">
-                                    <div class="partido1">
+                                <div class="votos" id="votos">
+                                    <div>
                                         <p>38%</p>
-                                        <p>30000 votos</p>
                                     </div>
-                                    <div class="partido2">
-                                        <p>20%</p>
-                                        <p>12000 votos</p>
+                                    <div>
+                                        <p>30000 votos</p>
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
+                        </td> -->
+                    <!-- </tr> -->
                 </table>
             </div>
         </section>

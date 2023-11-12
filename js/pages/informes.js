@@ -242,22 +242,22 @@ informesData.forEach((informe) => {
         </td>;
         <td class="datos-agrupacion">
             <div class="flex-td"><div class="partidos">`;
-    informe[10].forEach((agrup) => {
-        html += `<p>${agrup}</p>`;
-    });
-    html += `</div> <div class="votos">`;
-    informe[12].forEach((porcen) => {
-        html += `<div><p>${porcen}</p></div>`;
-    });
-    informe[11].forEach((votos) => {
+            informe[10].forEach((agrup) => {
+            html += `<p>${agrup}</p>`;
+            });
+            html += `</div> <div class="votos">`;
+            informe[12].forEach((porcen) => {
+         html += `<div><p>${porcen}</p></div>`;
+             });
+        informe[11].forEach((votos) => {
         html += `<div><p>${votos}</p></div>`;
-    });
+            });
 
-    html += `</div>
+        html += `</div>
                  </div>
                 </td></tr>`;
-
-    containerGrilla.innerHTML = html;
+                                        
+containerGrilla.innerHTML = html;
 });
 
 
