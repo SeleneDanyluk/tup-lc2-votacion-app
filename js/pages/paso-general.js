@@ -306,40 +306,44 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
     const contenedorBarras = document.getElementById("barras");
     let html = "";
 
+    if (tipoEleccion == 1) {
+        armarBarrasPaso(datos);
+    } else {
+        datos.valoresTotalizadosPositivos.forEach((agrupacion) => {
+            if (coloresAgrupacionesPoliticas.hasOwnProperty(agrupacion.idAgrupacion)) {
+                console.log("entro if");
+                html += `
+                <div class="progress-container">
+                    <div class="progress-titulo">
+                        <h4>${agrupacion.nombreAgrupacion}</h4>
+                        <p>${agrupacion.votosPorcentaje}%<br>${agrupacion.votos}Votos</p>
+                    </div>
+                    <div class="progress" style="background: ${coloresAgrupacionesPoliticas[agrupacion.idAgrupacion].colorLiviano};">
+                        <div class="progress-bar" style="width: ${agrupacion.votosPorcentaje}%; background: ${coloresAgrupacionesPoliticas[agrupacion.idAgrupacion].colorPleno};">
+                            <span class="progress-bar-text">${agrupacion.votosPorcentaje}%</span>
+                        </div>
+                    </div>
+                </div>`;
+                console.log(html);
+            } else {
+                html += `
+                <div class="progress-container">
+                    <div class="progress-titulo">
+                        <h4>${agrupacion.nombreAgrupacion}</h4>
+                        <p>${agrupacion.votosPorcentaje}%<br>${agrupacion.votos}Votos</p>
+                    </div>
+                    <div class="progress" style="background: ${coloresAgrupacionesPoliticas["gris"].colorLiviano};">
+                        <div class="progress-bar" style="width:${agrupacion.votosPorcentaje}%; background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};">
+                            <span class="progress-bar-text">${agrupacion.votosPorcentaje}%</span>
+                        </div>
+                    </div>
+                </div>`;
+            }
+        });
+        contenedorBarras.innerHTML = html;
+    }
 
-    datos.valoresTotalizadosPositivos.forEach((agrupacion) => {
-        console.log(agrupacion);
-        if (coloresAgrupacionesPoliticas.hasOwnProperty(agrupacion.idAgrupacion)) {
-            console.log("entro if");
-            html += `
-            <div class="progress-container">
-                <div class="progress-titulo">
-                    <h4>${agrupacion.nombreAgrupacion}</h4>
-                    <p>${agrupacion.votosPorcentaje}%<br>${agrupacion.votos}Votos</p>
-                </div>
-                <div class="progress" style="background: ${coloresAgrupacionesPoliticas[agrupacion.idAgrupacion].colorLiviano};">
-                    <div class="progress-bar" style="width: ${agrupacion.votosPorcentaje}%; background: ${coloresAgrupacionesPoliticas[agrupacion.idAgrupacion].colorPleno};">
-                        <span class="progress-bar-text">${agrupacion.votosPorcentaje}%</span>
-                    </div>
-                </div>
-            </div>`;
-            console.log(html);
-        } else {
-            html += `
-            <div class="progress-container">
-                <div class="progress-titulo">
-                    <h4>${agrupacion.nombreAgrupacion}</h4>
-                    <p>${agrupacion.votosPorcentaje}%<br>${agrupacion.votos}Votos</p>
-                </div>
-                <div class="progress" style="background: ${coloresAgrupacionesPoliticas["gris"].colorLiviano};">
-                    <div class="progress-bar" style="width:${agrupacion.votosPorcentaje}%; background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};">
-                        <span class="progress-bar-text">${agrupacion.votosPorcentaje}%</span>
-                    </div>
-                </div>
-            </div>`;
-        }
-    });
-    contenedorBarras.innerHTML = html;
+
 
     //Grafico de barras
     const contenedorBarrasVerticales = document.getElementById("grid");
@@ -372,20 +376,21 @@ function agregarInforme() {
         seccionProvincialId = "";
     };
     var seccionId = seccionSelect.value;
-    var mesasEscrutadas = datos.estadoRecuento.mesasTotalizadas
-    var cantidadElectores = datos.estadoRecuento.cantidadElectores
-    var participacion = datos.estadoRecuento.participacionPorcentaje
+    var distritoId = distritoSelect.value;
+    var mesasEscrutadas = datos.estadoRecuento.mesasTotalizadas;
+    var cantidadElectores = datos.estadoRecuento.cantidadElectores;
+    var participacion = datos.estadoRecuento.participacionPorcentaje;
     var nombreAgrupaciones = [];
     var votosAgrupaciones = [];
     var porcentajesAgrupaciones = [];
-    datos.valoresTotalizadosPositivos.forEach((agrupacion) =>{
+    datos.valoresTotalizadosPositivos.forEach((agrupacion) => {
         nombreAgrupaciones.push(agrupacion.nombreAgrupacion);
         votosAgrupaciones.push(agrupacion.votos);
         porcentajesAgrupaciones.push(agrupacion.votosPorcentaje);
-    } )
+    })
     console.log(datos);
-    
-    var values = [anioEleccion, tipoRecuento, tipoEleccion, cargoTxt, distritoTxt, seccionProvincialId, seccionId, mesasEscrutadas, cantidadElectores, participacion, nombreAgrupaciones, votosAgrupaciones, porcentajesAgrupaciones]
+
+    var values = [anioEleccion, tipoRecuento, tipoEleccion, cargoTxt, distritoTxt, seccionProvincialId, seccionId, mesasEscrutadas, cantidadElectores, participacion, nombreAgrupaciones, votosAgrupaciones, porcentajesAgrupaciones, distritoId];
     var key = "INFORMES";  // Use "INFORMES" as the key for all entries
     var storedData = localStorage.getItem(key);
 
@@ -394,7 +399,7 @@ function agregarInforme() {
         var existingData = JSON.parse(storedData);
 
         // Check if the new entry already exists
-        var entryExists = existingData.some(function(entry) {
+        var entryExists = existingData.some(function (entry) {
             return JSON.stringify(entry) === JSON.stringify(values);
         });
 
@@ -414,4 +419,40 @@ function agregarInforme() {
         mostrarMensajeVerde();
     }
     limpiarCombos();
+}
+
+function armarBarrasPaso(datos) {
+    const contenedorBarrasPaso = document.getElementById("progress-container");
+    var html = "";
+
+    datos.valoresTotalizadosPositivos.forEach((partido) => {
+        if (coloresAgrupacionesPoliticas.hasOwnProperty(partido.idAgrupacion)) {
+            html += `<h4>${partido.nombreAgrupacion}</h4>`;
+            partido.listas.forEach((lista) => {
+                html += `<div class="progress-titulo">
+                <h5>${lista.nombre}</h5>
+                <br><p>${(lista.votos * 100 / partido.votos)}%<br>${lista.votos} Votos</p>
+            </div>
+            <div class="progress" style="background: ${coloresAgrupacionesPoliticas[partido.idAgrupacion].colorLiviano};">
+                <div class="progress-bar" style="width:${(lista.votos * 100 / partido.votos)}%; background: ${coloresAgrupacionesPoliticas[partido.idAgrupacion].colorPleno};">
+                    <span class="progress-bar-text">${(lista.votos * 100 / partido.votos)}%</span>
+                </div>
+            </div>`;
+            });
+        } else {
+            html += `<h4>${partido.nombreAgrupacion}</h4>`;
+            partido.listas.forEach((lista) => {
+                html += `<div class="progress-titulo">
+                <h5>${lista.nombre}</h5>
+                <br><p>${(lista.votos * 100 / partido.votos)}%<br>${lista.votos} Votos</p>
+            </div>
+            <div class="progress" style="background: ${coloresAgrupacionesPoliticas["gris"].colorLiviano};">
+                <div class="progress-bar" style="width:${(lista.votos * 100 / partido.votos)}%; background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};">
+                    <span class="progress-bar-text">${(lista.votos * 100 / partido.votos)}%</span>
+                </div>
+            </div>`;
+            });
+        }
+    });
+    contenedorBarrasPaso.innerHTML = html;
 }

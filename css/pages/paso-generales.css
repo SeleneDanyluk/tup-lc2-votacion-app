@@ -175,7 +175,7 @@ select {
 
 #sec-contenido {
     margin-bottom: 50px;
-    display: grid;
+    display: none;
 }
 
 .bottons-container ul {
@@ -262,6 +262,12 @@ select {
 
 .agrupaciones h4 {
     color: gray;
+    border-bottom: 2px solid var(--gris-claro);
+}
+
+.progress-titulo h4{
+    color: gray;
+    /*border-bottom: 2px solid var(--gris-claro);*/
 }
 
 .agrupaciones p {
@@ -276,8 +282,8 @@ select {
 
 .progress-container {
     padding-top: 5px;
-    border-bottom: 2px solid var(--gris-claro);
 }
+
 
 /*Barra de progreso style*/
 
