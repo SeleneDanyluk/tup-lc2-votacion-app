@@ -8,11 +8,12 @@
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="./css/common.css" />
     <link rel="stylesheet" href="./css/pages/paso-generales.css">
+    <script src="js/pages/paso-general.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body>
+<body onload="mostrarMensajeAmarillo('Debe seleccionar los valores a filtrar y hacer clic en el botón FILTRAR')">
     <header>
         <!--Barra de logo portal-->
         <div class="header-page">
@@ -22,22 +23,28 @@
         <div class="header-menu">
             <ul>
                 <li>
-                    <select name="año" class="desplegable">
+                    <select name="año" class="desplegable" id="select-anio" onchange="comboCargo()">
                         <option value="0">Año</option>
                     </select>
                 </li>
                 <li>
-                    <select name="cargo" class="desplegable">
+                    <select name="cargo" id="select-cargo" class="desplegable" onchange="comboDistrito()">
                         <option value="0">Cargo</option>
                     </select>
                 </li>
                 <li>
-                    <select name="distrito" class="desplegable">
+                    <select name="distrito" id="select-distrito" class="desplegable" onchange="comboSeccion()">
                         <option value="0">Distrito</option>
                     </select>
                 </li>
+                <input type="hidden" id="hdSeccionProvincial" name="hdSeccionProvincial">
                 <li>
-                    <a class="active" href="#"><button id="boton-filtrar">
+                    <select name="secciones" id="select-seccion" class="desplegable">
+                        <option value="0">Seccion</option>
+                    </select>
+                </li>
+                <li>
+                    <a class="active" href="#" onclick="consultarResultados()"><button id="boton-filtrar">
                             <img src="https://img.icons8.com/?size=1x&id=132&format=png" height="15" alt="" srcset="">
                             Filtrar</button></a>
                 </li>
@@ -49,13 +56,11 @@
     </header>
     <!-- Contenido principal de la página -->
     <main>
-        <section id="sec-titulo">
-            <!--Seccion para agregar una palicula favorita por codigo-->
-            <h1>Elecciones 2021 | Paso</h1>
-            <p class="texto-path">2021 > Paso > Provisorio > Senadores Nacionales > Buenos
-                Aires</p>
-        </section>
         <section id="sec-messages">
+            <div class="yellow message">
+                <i class="fa-solid fa-exclamation"></i>
+                <p>Se agrego con éxito el resultado del informe</p>
+            </div>
             <div class="green message">
                 <i class="fa-solid fa-thumbs-up"></i>
                 <p>Se agregó con éxito el resultado al informe</p>
@@ -64,10 +69,11 @@
                 <i class="fa-solid fa-triangle-exclamation"></i>
                 <p>Error.Se produjo un error al intentar agregar resultados al informe</p>
             </div>
-            <div class="yellow message">
-                <i class="fa-solid fa-exclamation"></i>
-                <p>La operación no se pudo completar</p>
-            </div>
+        </section>
+        <section id="sec-titulo">
+            <!--Seccion para agregar una palicula favorita por codigo-->
+            <h1 id="titulo"></h1>
+            <p class="texto-path" id="texto-path"></p>
         </section>
         <section id="sec-contenido">
             <div class="bottons-container">
@@ -119,7 +125,7 @@
                         </svg>
                         <div class="content-botton">
                             <h4>Mesas Escrutadas</h4>
-                            <p>62.71%</p>
+                            <p id="mesas-escrutadas"></p>
                         </div>
                     </li>
                     <li class="botton-personas">
@@ -208,7 +214,7 @@
                         </svg>
                         <div class="content-botton">
                             <h4>Electores</h4>
-                            <p>62.71%</p>
+                            <p id="electores"></p>
                         </div>
                     </li>
                     <li class="botton-manos">
@@ -267,7 +273,7 @@
                         </svg>
                         <div class="content-botton">
                             <h4>Participación sobre escrutado</h4>
-                            <p>62.71%</p>
+                            <p id="participacion"></p>
                         </div>
                     </li>
                 </ul>
@@ -275,91 +281,19 @@
             <div class="container-recuadro">
                 <div class="recuadro agrupaciones">
                     <h3>Agrupaciones políticas</h3>
-                    <div class="barras">
-                        <div class="progress-container">
-                            <div class="progress-titulo">
-                                <h4>FRENTE DE TODOS</h4>
-                                <p>20%<br>12000 votos</p>
-                            </div>
-                            <div class="progress" style="background: var(--grafica-amarillo-claro);">
-                                <div class="progress-bar" style="width:15%; background: var(--graficaamarillo);">
-                                    <span class="progress-bar-text">15%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="progress-container">
-                            <div class="progress-titulo">
-                                <h4>FRENTE DE TODOS</h4>
-                                <p>20%<br>12000 votos</p>
-                            </div>
-                            <div class="progress" style="background: var(--grafica-amarillo-claro);">
-                                <div class="progress-bar" style="width:15%; background: var(--graficaamarillo);">
-                                    <span class="progress-bar-text">15%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="progress-container">
-                            <div class="progress-titulo">
-                                <h4>FRENTE DE TODOS</h4>
-                                <p>20%<br>12000 votos</p>
-                            </div>
-                            <div class="progress" style="background: var(--grafica-amarillo-claro);">
-                                <div class="progress-bar" style="width:15%; background: var(--graficaamarillo);">
-                                    <span class="progress-bar-text">15%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="progress-container">
-                            <div class="progress-titulo">
-                                <h4>FRENTE DE TODOS</h4>
-                                <p>20%<br>12000 votos</p>
-                            </div>
-                            <div class="progress" style="background: var(--grafica-amarillo-claro);">
-                                <div class="progress-bar" style="width:15%; background: var(--graficaamarillo);">
-                                    <span class="progress-bar-text">15%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="progress-container">
-                            <div class="progress-titulo">
-                                <h4>FRENTE DE TODOS</h4>
-                                <p>20%<br>12000 votos</p>
-                            </div>
-                            <div class="progress" style="background: var(--grafica-amarillo-claro);">
-                                <div class="progress-bar" style="width:15%; background: var(--graficaamarillo);">
-                                    <span class="progress-bar-text">15%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="progress-container">
-                            <div class="progress-titulo">
-                                <h4>FRENTE DE TODOS</h4>
-                                <p>20%<br>12000 votos</p>
-                            </div>
-                            <div class="progress" style="background: var(--grafica-amarillo-claro);">
-                                <div class="progress-bar" style="width:15%; background: var(--graficaamarillo);">
-                                    <span class="progress-bar-text">15%</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="barras" id="barras">
                     </div>
                 </div>
                 <div class="recuadro provincias">
-                    <h3>Buenos Aires</h3>
-                    <div class="provincia">
-                        <svg height="210" width="800">
-                            <path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1"
-                                fill-rule="evenodd"
-                                d="M171 55L163 53L150 45L147 50L143 49L133 60L114 60L114 151L116 151L120 155L122 156L126 153L128 149L124 145L126 143L126 138L128 138L129 133L126 129L126 122L134 126L139 126L169 119L179 114L189 97L190 89L189 87L186 87L182 82L185 75L181 69L171 63L170 64L170 58z">
-                            </path>
-                        </svg>
+                    <h3 id="tit-rec-prov"></h3>
+                    <div class="provincia" id="provincia">
+
                     </div>
                 </div>
                 <div class="recuadro resumen-votos">
                     <h3>Resumen de votos</h3>
                     <div>
-                        <div class="chart-wrap horizontal">
+                        <div class="chart-wrap horizontal" id="chart-wrap horizontal">
                             <div class="grid">
                                 <div class="bar" style="--bar-value:85%;" data-name="Partido 1" title="Your Blog
                             85%"></div>
