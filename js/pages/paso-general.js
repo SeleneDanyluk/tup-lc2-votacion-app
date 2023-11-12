@@ -368,8 +368,8 @@ function limpiarCombos() {
 };
 
 function agregarInforme() {
-    var anioEleccion = periodosSelect.value; // Valor seleccionado en el select de año
-    var cargoTxt = cargosSelect.options[cargosSelect.selectedIndex].innerText; // Valor seleccionado en el select de cargo
+    var anioEleccion = periodosSelect.value; 
+    var cargoTxt = cargosSelect.options[cargosSelect.selectedIndex].innerText;
     var distritoTxt = distritoSelect.options[distritoSelect.selectedIndex].innerText;
     var seccionProvincialId = hdSeccionProvincial.value;
     if (seccionProvincialId === "undefined") {
@@ -391,14 +391,12 @@ function agregarInforme() {
     console.log(datos);
 
     var values = [anioEleccion, tipoRecuento, tipoEleccion, cargoTxt, distritoTxt, seccionProvincialId, seccionId, mesasEscrutadas, cantidadElectores, participacion, nombreAgrupaciones, votosAgrupaciones, porcentajesAgrupaciones, distritoId];
-    var key = "INFORMES";  // Use "INFORMES" as the key for all entries
+    var key = "INFORMES"; 
     var storedData = localStorage.getItem(key);
 
     if (storedData != null) {
-        // Parse the existing data from local storage
         var existingData = JSON.parse(storedData);
 
-        // Check if the new entry already exists
         var entryExists = existingData.some(function (entry) {
             return JSON.stringify(entry) === JSON.stringify(values);
         });
@@ -406,15 +404,12 @@ function agregarInforme() {
         if (entryExists) {
             mostrarMensajeAmarillo();
         } else {
-            // Add the new entry to the existing data
             existingData.push(values);
 
-            // Update the local storage with the modified data
             localStorage.setItem(key, JSON.stringify(existingData));
             mostrarMensajeVerde();
         }
     } else {
-        // If no existing data, create a new array with the current entry
         localStorage.setItem(key, JSON.stringify([values]));
         mostrarMensajeVerde();
     }
