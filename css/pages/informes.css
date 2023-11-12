@@ -81,6 +81,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    display: none;
 }
 
 .message {
@@ -207,14 +208,20 @@ td {
 
 .mesas-escrutadas {
     background-color: var(--celeste);
+    display: flex;
+    align-items: center;
 }
 
 .electores {
     background-color: var(--magenta);
+    display: flex;
+    align-items: center;
 }
 
 .participacion-escrutado {
     background-color: var(--morado);
+    display: flex;
+    align-items: center;
 }
 
 .datos-agrupacion .flex-td {
