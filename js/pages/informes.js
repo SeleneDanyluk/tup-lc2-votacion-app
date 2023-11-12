@@ -58,7 +58,7 @@ informesData.forEach((informe) => {
         </td>
         <td class="datos-generales">
             <div class="flex-td">
-                <div class="mesas-escrutadas">
+                <div class="botton-personas">
                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="841.889px"
                         height="595.281px" viewBox="0 0 841.889 595.281"
@@ -104,9 +104,9 @@ informesData.forEach((informe) => {
                             </path>
                         </g>
                     </svg>
-                    <p class="texto-recuadro"><b>Mesas Escrutadas</b>${informe[7]}</p>
+                    <p class="texto-recuadro"><b>Mesas Escrutadas</b><br> ${informe[7]}</p>
                 </div>
-                <div class="electores">
+                <div class="botton-urna">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="841.889px"
                         height="595.281px" viewBox="0 0 841.889 595.281"
@@ -191,9 +191,9 @@ informesData.forEach((informe) => {
                                         c-0.238-0.571-0.797-0.944-1.416-0.944l0,0c-4.601,1.534-7.55-4.364-8.966-9.319c-2.595-10.027-1.18-14.864,0.473-17.105H180.521z">
                         </path>
                     </svg>
-                    <p class="texto-recuadro"><b>Electores</b>${informe[8]}</p>
+                    <p class="texto-recuadro"><b>Electores</b><br> ${informe[8]}</p>
                 </div>
-                <div class="participacion-escrutado">
+                <div class="botton-manos">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="841.889px"
                         height="595.281px" viewBox="0 0 841.889 595.281"
@@ -253,24 +253,26 @@ informesData.forEach((informe) => {
                         <rect x="195.975" y="387.534" fill="#FFFFFF" width="69.013" height="14.393">
                         </rect>
                     </svg>
-                    <p class="texto-recuadro"><b>Participación sobre escrutado</b>${informe[9]}</p>
+                    <p class="texto-recuadro"><b>Participación sobre escrutado</b><br> ${informe[9]}</p>
                 </div>
             </div>
-        </td>;
+        </td>
         <td class="datos-agrupacion">
-            <div class="flex-td"><div class="partidos">`;
-            informe[10].forEach((agrup) => {
-            html += `<p>${agrup}</p>`;
-            });
-            html += `</div> <div class="votos">`;
-            informe[12].forEach((porcen) => {
-         html += `<div><p>${porcen}</p></div>`;
-             });
-        informe[11].forEach((votos) => {
-        html += `<div><p>${votos}</p></div>`;
-            });
-
-        html += `</div>
+            <div class="flex-td">`;
+        for (let i = 0; i < informe[10].length; i++) {
+            html += ` <div class="partidos" id="partidos">
+            <p>${informe[10][i]}</p>
+                </div>
+            <div class="votos" id="votos">
+            <div>
+                <p>${informe[12][i]}%</p>
+            </div>
+            <div>
+                <p>${informe[11][i]} votos</p>
+            </div>
+        </div>`;
+        }
+        html += `
                  </div>
                 </td></tr>`;
                                         

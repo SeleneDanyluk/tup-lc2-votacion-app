@@ -307,7 +307,7 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
     let html = "";
 
     if (tipoEleccion == 1) {
-        armarBarrasPaso(datos);
+        armarBarrasPaso();
     } else {
         datos.valoresTotalizadosPositivos.forEach((agrupacion) => {
             if (coloresAgrupacionesPoliticas.hasOwnProperty(agrupacion.idAgrupacion)) {
@@ -421,7 +421,7 @@ function agregarInforme() {
     limpiarCombos();
 }
 
-function armarBarrasPaso(datos) {
+function armarBarrasPaso() {
     const contenedorBarrasPaso = document.getElementById("progress-container");
     var html = "";
 
@@ -445,12 +445,12 @@ function armarBarrasPaso(datos) {
                 html += `<div class="progress-titulo">
                 <h5>${lista.nombre}</h5>
                 <br><p>${(lista.votos * 100 / partido.votos)}%<br>${lista.votos} Votos</p>
-            </div>
-            <div class="progress" style="background: ${coloresAgrupacionesPoliticas["gris"].colorLiviano};">
-                <div class="progress-bar" style="width:${(lista.votos * 100 / partido.votos)}%; background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};">
-                    <span class="progress-bar-text">${(lista.votos * 100 / partido.votos)}%</span>
                 </div>
-            </div>`;
+                <div class="progress" style="background: ${coloresAgrupacionesPoliticas["gris"].colorLiviano};">
+                    <div class="progress-bar" style="width:${(lista.votos * 100 / partido.votos)}%; background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};">
+                    <span class="progress-bar-text">${(lista.votos * 100 / partido.votos)}%</span>
+                    </div>
+                </div>`;
             });
         }
     });

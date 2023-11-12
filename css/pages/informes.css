@@ -118,7 +118,7 @@
 /*Contenido de la página*/
 
 .container-grilla-informes {
-    width: 1024px;
+    width: 80%;
     border: solid 1px var(--borde-Grilla);
     border-radius: 15px;
     overflow: hidden;
@@ -207,19 +207,16 @@ td {
 }
 
 .mesas-escrutadas {
-    background-color: var(--celeste);
     display: flex;
     align-items: center;
 }
 
 .electores {
-    background-color: var(--magenta);
     display: flex;
     align-items: center;
 }
 
 .participacion-escrutado {
-    background-color: var(--morado);
     display: flex;
     align-items: center;
 }
@@ -241,4 +238,33 @@ td {
 
 .votos div {
     padding: 15px 0px 0px 15px;
+}
+
+.botton-urna,
+.botton-personas,
+.botton-manos {
+    color: white;
+    display: flex;
+    align-items: center;
+    height: 70px;
+    width: 184px;
+    padding: 0.5rem 1rem;
+}
+
+.botton-urna p,
+.botton-personas p,
+.botton-manos p {
+    color: white;
+}
+
+.botton-urna {
+    background-color: var(--celeste);
+}
+
+.botton-personas {
+    background-color: var(--magenta);
+}
+
+.botton-manos {
+    background-color: var(--morado);
 }
