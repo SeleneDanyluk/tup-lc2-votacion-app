@@ -26,11 +26,14 @@ const mapasProv = {
 };
 // Recuperar los datos almacenados en localStorage
 var storedData = localStorage.getItem("INFORMES");
+const contenedorInformes = document.getElementById("container-grilla-informes");
+//contenedorInformes.style.display = "none";
 
 // Verificar si hay datos almacenados
 if (storedData) {
     // Convertir la cadena JSON a un array de JavaScript
     var informesData = JSON.parse(storedData);
+    //contenedorInformes.style.display = "flex";
 } else {
     // No hay datos almacenados
     console.log("No hay datos almacenados en localStorage.");

@@ -12,7 +12,6 @@ const mensajeRojo = document.querySelector('.red')
 const parrafoMensajeVerde = mansajeVerde.querySelector('p')
 const parrafoMensajeAmarillo = mensajeAmarillo.querySelector('p')
 const parrafoMensajeRojo = mensajeRojo.querySelector('p')
-
 const mapasProv = {
     1: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M182 61L179 56L176 58L178 56L176 53L173 55L169 47L168 48L164 45L157 43L158 41L155 41L154 36L149 32L148 33L143 29L142 30L145 32L140 29L138 32L137 30L140 29L139 26L137 28L136 23L133 22L130 27L103 41L81 99L82 134L131 179L159 140L168 137L171 139L174 138L181 141L186 137L195 136L200 130L207 125L205 120L210 118L210 112L205 107L210 110L213 114L215 113L215 110L217 110L218 112L219 111L217 109L221 111L224 109L220 106L222 106L221 102L218 102L216 104L215 103L217 102L212 102L220 101L219 95L216 92L214 86L208 81L200 83L199 80L201 79L202 81L200 77L206 75L203 75L203 73L206 73L201 71L205 70L199 69L198 68L202 68L200 66L195 67L194 66L198 65L188 62L192 62L190 60L183 59L189 64L187 65z"></path></svg>',
     2: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M171 55L163 53L150 45L147 50L143 49L133 60L114 60L114 151L116 151L120 155L122 156L126 153L128 149L124 145L126 143L126 138L128 138L129 133L126 129L126 122L134 126L139 126L169 119L179 114L189 97L190 89L189 87L186 87L182 82L185 75L181 69L171 63L170 64L170 58z"></path></svg>',
@@ -70,7 +69,7 @@ if (location.href.includes("paso")) {
     tipoEleccion = 2
 }
 
-//setear intervalo (ver para mostrar los otros mensajes)
+//Mensaje al usuario rojo
 function mostrarMensajeRojo(mensaje = "") {
     if (mensaje != "") {
         parrafoMensajeRojo.innerHTML = mensaje
@@ -81,6 +80,7 @@ function mostrarMensajeRojo(mensaje = "") {
     }, 5000);
 }
 
+//Mensaje al usuario amarillo
 function mostrarMensajeAmarillo(mensaje = "") {
     if (mensaje != "") {
         parrafoMensajeAmarillo.innerHTML = mensaje
@@ -91,6 +91,7 @@ function mostrarMensajeAmarillo(mensaje = "") {
     }, 5000);
 }
 
+//Mensaje al usuario verde
 function mostrarMensajeVerde(mensaje = "") {
     if (mensaje != "") {
         parrafoMensajeVerde.innerHTML = mensaje
@@ -225,10 +226,11 @@ function comboSeccion() {
     }
 }
 
+//Funcion async    consulta resultados con todas las opciones seleccionadas
 async function consultarResultados() {
-    let cargoTxt = cargosSelect.options[cargosSelect.selectedIndex].innerText; //obtener el texto del campo seleccionado
-    let distritoTxt = distritoSelect.options[distritoSelect.selectedIndex].innerText;
-    let seccionTxt = seccionSelect.options[seccionSelect.selectedIndex].innerText;
+    let cargoTxt = cargosSelect.options[cargosSelect.selectedIndex].innerText; //obtener el texto del campo cargo
+    let distritoTxt = distritoSelect.options[distritoSelect.selectedIndex].innerText; //obtener el texto del campo distrito
+    let seccionTxt = seccionSelect.options[seccionSelect.selectedIndex].innerText; //obtener el texto del campo sección
     const anioEleccion = periodosSelect.value; // Valor seleccionado en el select de año
     const categoriaId = cargosSelect.value; // Valor seleccionado en el select de cargo
     const distritoId = distritoSelect.value; // Valor seleccionado en el select de distrito
@@ -262,11 +264,12 @@ async function consultarResultados() {
         console.log(datos.estadoRecuento.mesasTotalizadas);
         cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTxt, seccionTxt, distritoId);
     } catch (error) {
-        mostrarMensajeRojo()
+        mostrarMensajeRojo("Error. Error al obtener resultados de la API.");
+        limpiarCombos();
     }
 }
 
-//hacer desaparecer todo y que aparezca cuando se carga la api
+//Funcion cargar datos es llamada dentro de consultarResultados una vez obtuvimos resultado de la api.
 function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTxt, seccionTxt, distritoId) {
 
     //Crea titulo y subtitulo
@@ -295,7 +298,7 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
     electores.innerHTML = datos.estadoRecuento.cantidadElectores
     participacion.innerHTML = `${datos.estadoRecuento.participacionPorcentaje}%`;
 
-    //Mapa
+    //Completa el cuadro mapas
     tituloRecuadroProv = document.getElementById("tit-rec-prov");
     tituloRecuadroProv.innerHTML = `${distritoTxt}`;
     mapa = document.getElementById("provincia");
@@ -343,8 +346,6 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
         contenedorBarras.innerHTML = html;
     }
 
-
-
     //Grafico de barras
     const contenedorBarrasVerticales = document.getElementById("grid");
     html = "";
@@ -359,6 +360,7 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
     }
 }
 
+//Elimina los valores seleccionados en los combos para una nueva consulta
 function limpiarCombos() {
     periodosSelect.value = 0;
     cargosSelect.value = 0;
@@ -367,33 +369,38 @@ function limpiarCombos() {
     hdSeccionProvincial.value = 0;
 };
 
+//Agregar informe almacena los datos necesarios en el localStorage para ser recuperados en informes.html
 function agregarInforme() {
-    var anioEleccion = periodosSelect.value; 
+    var anioEleccion = periodosSelect.value;
     var cargoTxt = cargosSelect.options[cargosSelect.selectedIndex].innerText;
     var distritoTxt = distritoSelect.options[distritoSelect.selectedIndex].innerText;
     var seccionProvincialId = hdSeccionProvincial.value;
     if (seccionProvincialId === "undefined") {
         seccionProvincialId = "";
     };
+    if (tipoEleccion == 2) {
+        tipoEleccion = "Generales"
+    } else {
+        tipoEleccion = "Paso"
+    };
     var seccionId = seccionSelect.value;
     var distritoId = distritoSelect.value;
     var mesasEscrutadas = datos.estadoRecuento.mesasTotalizadas;
     var cantidadElectores = datos.estadoRecuento.cantidadElectores;
     var participacion = datos.estadoRecuento.participacionPorcentaje;
-    var nombreAgrupaciones = [];
-    var votosAgrupaciones = [];
-    var porcentajesAgrupaciones = [];
+    var nombreAgrupaciones = []; //Definimos un array para almacenar el nombre de los partidos politicos
+    var votosAgrupaciones = []; //Definimos un array para almacenar la cantidad de votos por partido político
+    var porcentajesAgrupaciones = []; //Definimos un array para almacenar el porcentaje de votos por partido político
     datos.valoresTotalizadosPositivos.forEach((agrupacion) => {
         nombreAgrupaciones.push(agrupacion.nombreAgrupacion);
         votosAgrupaciones.push(agrupacion.votos);
         porcentajesAgrupaciones.push(agrupacion.votosPorcentaje);
     })
-    console.log(datos);
-
     var values = [anioEleccion, tipoRecuento, tipoEleccion, cargoTxt, distritoTxt, seccionProvincialId, seccionId, mesasEscrutadas, cantidadElectores, participacion, nombreAgrupaciones, votosAgrupaciones, porcentajesAgrupaciones, distritoId];
-    var key = "INFORMES"; 
+    var key = "INFORMES"; //Definimos la key para el localStorage
     var storedData = localStorage.getItem(key);
 
+    //Evalua si es el primer informe que se esta agregando para agregar la key
     if (storedData != null) {
         var existingData = JSON.parse(storedData);
 
@@ -402,7 +409,7 @@ function agregarInforme() {
         });
 
         if (entryExists) {
-            mostrarMensajeAmarillo();
+            mostrarMensajeAmarillo("La consulta ya ha sido agregada al informe.");
         } else {
             existingData.push(values);
 
@@ -412,10 +419,12 @@ function agregarInforme() {
     } else {
         localStorage.setItem(key, JSON.stringify([values]));
         mostrarMensajeVerde();
-    }
+    };
+
     limpiarCombos();
 }
 
+//Si el tipo de eleccion es Paso debe armar el html recorriendo las listas de cada partido politico
 function armarBarrasPaso() {
     const contenedorBarrasPaso = document.getElementById("progress-container");
     var html = "";

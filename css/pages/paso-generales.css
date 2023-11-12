@@ -195,10 +195,23 @@ select {
 .agregar-informe {
     background-color: var(--gris-claro);
     color: white;
-    padding: 0.5rem 1rem;
+}
+
+.agregar-informe a, .agregar-informe button{
+    background-color: transparent;
+    text-decoration: none;
+    color: white;
+    font-size: 12px;
+    border: none;
+    padding: 5px;
+
 }
 
 .agregar-informe:hover {
+    background-color: var(--textos);
+}
+
+.agregar-informe a button:hover {
     background-color: var(--textos);
 }
 
