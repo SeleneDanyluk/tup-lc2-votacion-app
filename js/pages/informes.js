@@ -46,6 +46,8 @@ function mostrarMensajeAmarillo(mensaje = "") {
 
 // Verificar si hay datos almacenados
 if (storedData) {
+    mensajeAmarillo.style.display = 'none';
+    seccionMensaje.style.display = 'none';
     // Convertir la cadena JSON a un array de JavaScript
     var informesData = JSON.parse(storedData);
     //contenedorInformes.style.display = "flex";
@@ -266,7 +268,7 @@ if (storedData) {
                             <rect x="195.975" y="387.534" fill="#FFFFFF" width="69.013" height="14.393">
                             </rect>
                         </svg>
-                        <p class="texto-recuadro"><b>Participación sobre escrutado</b><br> ${informe[9]}</p>
+                        <p class="texto-recuadro"><b>Participación sobre escrutado</b><br> ${informe[9]}%</p>
                     </div>
                 </div>
             </td>

@@ -239,7 +239,6 @@ async function consultarResultados() {
         seccionProvincialId = "";
     };
     const seccionId = seccionSelect.value;
-    console.log(seccionId);
     const circuitoId = ""; // Valor por defecto
     const mesaId = ""; // Valor por defecto
 
@@ -264,7 +263,7 @@ async function consultarResultados() {
         console.log(datos.estadoRecuento.mesasTotalizadas);
         cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTxt, seccionTxt, distritoId);
     } catch (error) {
-        mostrarMensajeRojo("Error. Error al obtener resultados de la API.");
+        //mostrarMensajeRojo("Error. Error al obtener resultados de la API.");
         limpiarCombos();
     }
 }
@@ -309,12 +308,11 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
     const contenedorBarras = document.getElementById("barras");
     let html = "";
 
-    if (tipoEleccion == 1) {
+    if (tipoEleccion == "Paso") {
         armarBarrasPaso();
     } else {
         datos.valoresTotalizadosPositivos.forEach((agrupacion) => {
             if (coloresAgrupacionesPoliticas.hasOwnProperty(agrupacion.idAgrupacion)) {
-                console.log("entro if");
                 html += `
                 <div class="progress-container">
                     <div class="progress-titulo">
@@ -353,7 +351,6 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
         if (coloresAgrupacionesPoliticas.hasOwnProperty(datos.valoresTotalizadosPositivos[index].idAgrupacion)) {
             html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas[datos.valoresTotalizadosPositivos[index].idAgrupacion].colorPleno}; --bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}85%"></div>`;
         } else {
-            console.log("else")
             html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas["gris"].colorPleno}; --bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}85%"></div>`;
         };
         contenedorBarrasVerticales.innerHTML = html;
@@ -372,6 +369,7 @@ function limpiarCombos() {
 //Agregar informe almacena los datos necesarios en el localStorage para ser recuperados en informes.html
 function agregarInforme() {
     var anioEleccion = periodosSelect.value;
+    console.log(anioEleccion);
     var cargoTxt = cargosSelect.options[cargosSelect.selectedIndex].innerText;
     var distritoTxt = distritoSelect.options[distritoSelect.selectedIndex].innerText;
     var seccionProvincialId = hdSeccionProvincial.value;
@@ -408,7 +406,7 @@ function agregarInforme() {
             return JSON.stringify(entry) === JSON.stringify(values);
         });
 
-        if (entryExists) {
+        if (entryExists && anioEleccion == 0) {
             mostrarMensajeAmarillo("La consulta ya ha sido agregada al informe.");
         } else {
             existingData.push(values);
@@ -417,12 +415,19 @@ function agregarInforme() {
             mostrarMensajeVerde();
         }
     } else {
-        localStorage.setItem(key, JSON.stringify([values]));
-        mostrarMensajeVerde();
+        if (anioEleccion != 0) {
+            localStorage.setItem(key, JSON.stringify([values]));
+            mostrarMensajeVerde();
+        }
     };
 
     limpiarCombos();
-}
+    contenedorContenido = document.getElementById("sec-contenido");
+    contenedorContenido.style.display = "none";
+    contenedorTitulo = document.getElementById("sec-titulo");
+    contenedorTitulo.style.display = "none";
+
+};
 
 //Si el tipo de eleccion es Paso debe armar el html recorriendo las listas de cada partido politico
 function armarBarrasPaso() {
@@ -435,11 +440,11 @@ function armarBarrasPaso() {
             partido.listas.forEach((lista) => {
                 html += `<div class="progress-titulo">
                 <h5>${lista.nombre}</h5>
-                <br><p>${(lista.votos * 100 / partido.votos)}%<br>${lista.votos} Votos</p>
+                <br><p>${(lista.votos * 100 / partido.votos).toFixed(2)}%<br>${lista.votos} Votos</p>
             </div>
             <div class="progress" style="background: ${coloresAgrupacionesPoliticas[partido.idAgrupacion].colorLiviano};">
-                <div class="progress-bar" style="width:${(lista.votos * 100 / partido.votos)}%; background: ${coloresAgrupacionesPoliticas[partido.idAgrupacion].colorPleno};">
-                    <span class="progress-bar-text">${(lista.votos * 100 / partido.votos)}%</span>
+                <div class="progress-bar" style="width:${(lista.votos * 100 / partido.votos).toFixed(2)}%; background: ${coloresAgrupacionesPoliticas[partido.idAgrupacion].colorPleno};">
+                    <span class="progress-bar-text">${(lista.votos * 100 / partido.votos).toFixed(2)}%</span>
                 </div>
             </div>`;
             });
@@ -448,11 +453,11 @@ function armarBarrasPaso() {
             partido.listas.forEach((lista) => {
                 html += `<div class="progress-titulo">
                 <h5>${lista.nombre}</h5>
-                <br><p>${(lista.votos * 100 / partido.votos)}%<br>${lista.votos} Votos</p>
+                <br><p>${(lista.votos * 100 / partido.votos).toFixed(2)}%<br>${lista.votos} Votos</p>
                 </div>
                 <div class="progress" style="background: ${coloresAgrupacionesPoliticas["gris"].colorLiviano};">
-                    <div class="progress-bar" style="width:${(lista.votos * 100 / partido.votos)}%; background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};">
-                    <span class="progress-bar-text">${(lista.votos * 100 / partido.votos)}%</span>
+                    <div class="progress-bar" style="width:${(lista.votos * 100 / partido.votos).toFixed(2)}%; background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};">
+                    <span class="progress-bar-text">${(lista.votos * 100 / partido.votos).toFixed(2)}%</span>
                     </div>
                 </div>`;
             });

@@ -227,15 +227,23 @@ td {
     padding: 5px;
     font-size: 10px;
     color: var(--textos);
+    align-items: center;
 }
 
 .partidos {
-    font-weight: bold;
-    line-height: 50px;
+    font-weight: bold; 
+}
+
+.partidos p{
+    font-size: 12px;
 }
 
 .votos div {
     padding: 15px 0px 0px 15px;
+}
+
+.votos p{
+    font-size: 10px;
 }
 
 .botton-urna,
