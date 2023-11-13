@@ -306,6 +306,18 @@ select {
     justify-content: space-between;
 }
 
+.progress-titulo h4{
+    font-size: 12px;
+}
+
+.progress-titulo h5{
+    font-size: 12px;
+}
+
+.progress-container h4{
+    font-size: 12px;
+}
+
 .progress {
     height: 20px;
     width: 100%;
@@ -338,6 +350,9 @@ select {
 }
 
 /*Gráfico de barras*/
+.container-grafico{
+    display: flex;
+}
 
 .chart-wrap {
     font-family: sans-serif;
@@ -388,7 +403,7 @@ select {
     font-weight: bold;
     content: '100%';
     position: absolute;
-    right: -1.5em;
+    right: 6em;
     top: -1.5em;
 }
 
