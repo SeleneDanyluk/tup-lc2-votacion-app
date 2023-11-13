@@ -258,22 +258,15 @@ async function consultarResultados() {
     try {
         const url = "https://resultados.mininterior.gob.ar/api/resultados/getResultados";
         const queryParams = `?anioEleccion=${anioEleccion}&tipoRecuento=${tipoRecuento}&tipoEleccion=${tipoEleccion}&categoriaId=${categoriaId}&distritoId=${distritoId}&seccionProvincialId=${seccionProvincialId}&seccionId=${seccionId}&circuitoId=${circuitoId}&mesaId=${mesaId}`;
+        console.log(url + queryParams);
         const response = await fetch(url + queryParams);
-        spinner.style.display = "grid";
-        //Evalua si el estado de la consulta esta ok, de no serlo trae error
-        if (!response.ok) {
-            throw new Error;
-        } else {
-            datos = await response.json();
-            cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTxt, seccionTxt, distritoId);
-        }
-
-    } catch (Error) {
-        spinner.style.display = "none";
-        mostrarMensajeRojo("Error. Error al obtener resultados de la API.");
-        limpiarCombos();
-    };
-
+        datos = await response.json();
+        console.log(datos.estadoRecuento.mesasTotalizadas);
+        cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTxt, seccionTxt, distritoId);
+    } catch (error) {
+        //mostrarMensajeRojo("Error. Error al obtener resultados de la API.");
+        //limpiarCombos();
+    }
 }
 
 //Funcion cargar datos es llamada dentro de consultarResultados una vez obtuvimos resultado de la api.
@@ -356,9 +349,9 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
     html = "";
     for (let index = 0; index < 8; index++) {
         if (coloresAgrupacionesPoliticas.hasOwnProperty(datos.valoresTotalizadosPositivos[index].idAgrupacion)) {
-            html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas[datos.valoresTotalizadosPositivos[index].idAgrupacion].colorPleno}; --bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}85%"></div>`;
+            html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas[datos.valoresTotalizadosPositivos[index].idAgrupacion].colorPleno}; --bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}"></div>`;
         } else {
-            html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas["gris"].colorPleno}; --bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}85%"></div>`;
+            html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas["gris"].colorPleno}; --bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}"></div>`;
         };
         contenedorBarrasVerticales.innerHTML = html;
     }
