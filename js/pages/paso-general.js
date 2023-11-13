@@ -264,7 +264,7 @@ async function consultarResultados() {
         cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTxt, seccionTxt, distritoId);
     } catch (error) {
         //mostrarMensajeRojo("Error. Error al obtener resultados de la API.");
-        limpiarCombos();
+        //limpiarCombos();
     }
 }
 
