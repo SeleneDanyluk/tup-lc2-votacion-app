@@ -26,6 +26,7 @@ const mapasProv = {
 };
 const mensajeAmarillo = document.querySelector('.yellow');
 const parrafoMensajeAmarillo = mensajeAmarillo.querySelector('p');
+const seccionMensaje = document.getElementById("sec-messages");
 
 // Recuperar los datos almacenados en localStorage
 var storedData = localStorage.getItem("INFORMES");
@@ -36,8 +37,10 @@ function mostrarMensajeAmarillo(mensaje = "") {
         parrafoMensajeAmarillo.innerHTML = mensaje;
     }
     mensajeAmarillo.style.display = 'flex';
+    seccionMensaje.style.display = 'flex';
     setTimeout(() => {
         mensajeAmarillo.style.display = 'none';
+        seccionMensaje.style.display = 'none';
     }, 5000);
 };
 
