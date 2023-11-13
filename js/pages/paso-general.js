@@ -325,7 +325,6 @@ function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTx
                         </div>
                     </div>
                 </div>`;
-                console.log(html);
             } else {
                 html += `
                 <div class="progress-container">
@@ -406,7 +405,7 @@ function agregarInforme() {
             return JSON.stringify(entry) === JSON.stringify(values);
         });
 
-        if (entryExists && anioEleccion == 0) {
+        if (entryExists) {
             mostrarMensajeAmarillo("La consulta ya ha sido agregada al informe.");
         } else {
             existingData.push(values);
